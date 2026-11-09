@@ -9,7 +9,7 @@ Klasifikasi Status Gizi dan Deteksi Dini Stunting pada Balita di Indonesia
 - **Mata Kuliah:** Data Science
 - **Dosen Pengampu:** Gus Nanang Syaifuddiin, S.Kom., M.Kom.
 - **Tahun Akademik:** 2026, Semester 5
-- **Link GitHub Repository:** [URL Repository]
+- **Link GitHub Repository:** [https://github.com/azzaauliyaul/Machine-Learning-Stunting-Detection](https://github.com/azzaauliyaul/Machine-Learning-Stunting-Detection)
 - **Link Video Pembahasan:** [URL Video (YouTube/Drive)]
 - **SDG yang Dipilih:** SDG 3 - Kehidupan Sehat dan Sejahtera
 - **Target SDG yang Relevan:** Target 3.2 - Mengakhiri kematian bayi dan balita yang dapat dicegah, serta mengeliminasi segala bentuk malnutrisi pada balita pada tahun 2030.
