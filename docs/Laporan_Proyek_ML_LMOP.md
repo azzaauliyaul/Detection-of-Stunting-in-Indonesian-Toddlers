@@ -95,6 +95,10 @@ Tuliskan 2–4 pernyataan masalah yang jelas dan spesifik.
 4. Dibutuhkan model deep learning yang mampu belajar representasi fitur kompleks
 
 **[Tulis problem statements Anda di sini]**
+1. Model klasifikasi perlu mampu memprediksi status gizi balita (Normal, Stunted, Severely Stunted, Tinggi) secara akurat dan konsisten berdasarkan data antropometri dasar.
+2. Dataset berpotensi mengalami ketidakseimbangan kelas (class imbalance) sehingga membutuhkan teknik optimasi dan preprocessing yang tepat.
+3. Diperlukan model pembelajaran mesin yang memiliki sensitivitas (recall) tinggi pada kelas stunted untuk meminimalkan risiko false negative dalam intervensi medis.
+4. Dibutuhkan model komparatif yang andal untuk dijadikan dasar instrumen pendukung keputusan bagi tenaga kesehatan.
 
 ### 3.2 Formulasi Learning Problem (WAJIB)
 
@@ -102,9 +106,9 @@ Rumuskan masalah dalam kerangka *Learning Problem*:
 
 | Komponen | Pertanyaan Panduan | Jawaban Anda |
 |----------|--------------------|--------------|
-| **Target** | Apa yang diprediksi? Jenis tugas (klasifikasi biner/multikelas, regresi, forecasting, clustering, dll.)? | [ ... ] |
-| **Objective** | Apa yang dioptimalkan/diminimalkan secara matematis (misal: cross-entropy, MSE)? Metrik keberhasilan utama? | [ ... ] |
-| **Data** | Sumber, ukuran, jenis, dan asumsi tentang data (i.i.d.? distribusi train vs test?) | [ ... ] |
+| **Target** | Apa yang diprediksi? Jenis tugas (klasifikasi biner/multikelas, regresi, forecasting, clustering, dll.)? | **Target Kategori** : Status gizi balita yang terbagi dalam 4 kelas multikelas(Normal, Stunted, Severely Stunted, dan Tinggi). <br>**Jenis Tugas**: Klasifikasi Multi-Kelas (Multi-Class Classification) berbasis Supervised Learning. |
+| **Objective** | Apa yang dioptimalkan/diminimalkan secara matematis (misal: cross-entropy, MSE)? Metrik keberhasilan utama? | **Fungsi Kerugian (Loss Function)**: Meminimalkan Categorical Cross-Entropy / Log Loss. <br> **Metrik Keberhasilan** : <br>•Macro F1-Score: Mengukur keseimbangan performa & sensitivitas 4 kelas target. <br>•Recall: Meminimalkan angka false negative. |
+| **Data** | Sumber, ukuran, jenis, dan asumsi tentang data (i.i.d.? distribusi train vs test?) | **Sumber Data kaggle** : Stunting Balita Detection 121k rows oleh Rendi Putra. <br>**Jenis & Ukuran Data**: Data kuantitatif terstruktur (tabular) berjumlah 121.000 observasi. <br>**Asumsi Data**: <br>• Data diasumsikan i.i.d. (independent and identically distributed) antar-sampel individu balita. <br>• Train/Test Split: Menggunakan Stratified Sampling (misal: 80% train, 20% test) untuk menjaga rasio distribusi 4 kelas target tetap konsisten antara data latih dan data uji.|
 
 ### 3.3 Goals
 
