@@ -1,19 +1,18 @@
----
 ## INFORMASI PROYEK
 
 **Judul Proyek:**  
-[(Contoh: "Klasifikasi Penyakit Daun Menggunakan CNN", "Prediksi Harga Rumah dengan Machine Learning", "Analisis Sentimen Ulasan Produk")]
+Klasifikasi Status Gizi dan Deteksi Dini Stunting pada Balita di Indonesia
 
-**Nama Mahasiswa:** [Nama Lengkap]  
-**NIM:** [Nomor Induk Mahasiswa]  
-**Program Studi:** [Teknologi Informasi / Rekayasa Perangkat Lunak]  
-**Mata Kuliah:** [Nama Mata Kuliah]  
-**Dosen Pengampu:** [Nama Dosen]  
-**Tahun Akademik:** [Tahun/Semester]  
-**Link GitHub Repository:** [URL Repository]  
-**Link Video Pembahasan:** [URL Video (YouTube/Drive)]  
-**SDG yang Dipilih:** [Nomor & nama Goal, misal: SDG 3 – Kehidupan Sehat dan Sejahtera]  
-**Target SDG yang Relevan:** [misal: Target 3.4 – mengurangi kematian dini akibat penyakit tidak menular]
+- **Nama Mahasiswa:** Azza Auliyaul Fitri & Edwin Nur Cahyo
+- **NIM:** 244311006 & 244311012
+- **Program Studi:** Teknologi Rekayasa Perangkat Lunak
+- **Mata Kuliah:** Data Science
+- **Dosen Pengampu:** Gus Nanang Syaifuddiin, S.Kom., M.Kom.
+- **Tahun Akademik:** 2026, Semester 5
+- **Link GitHub Repository:** [URL Repository]
+- **Link Video Pembahasan:** [URL Video (YouTube/Drive)]
+- **SDG yang Dipilih:** SDG 3 - Kehidupan Sehat dan Sejahtera
+- **Target SDG yang Relevan:** Target 3.2 - Mengakhiri kematian bayi dan balita yang dapat dicegah, serta mengeliminasi segala bentuk malnutrisi pada balita pada tahun 2030.
 
 ---
 
@@ -58,17 +57,11 @@ Pada proyek ini, mahasiswa diharapkan dapat:
 ## 2. PROJECT OVERVIEW  **[L]**
 
 ### 2.1 Latar Belakang
-**Isi bagian ini dengan:**
-- Mengapa proyek ini penting?
-- Permasalahan umum pada domain terkait (misal: kesehatan, pendidikan, keuangan, pertanian, NLP, computer vision, dll.)
-- Manfaat proyek untuk pengguna, bisnis, atau penelitian
-- Studi literatur atau referensi ilmiah (minimal 1–2 sumber wajib)
-- Keterkaitan masalah dengan SDGs yang dipilih (dijabarkan di Bab 2.2)
+Stunting merupakan salah satu ancaman terbesar terhadap perkembangan modal manusia di Indonesia. Gangguan pertumbuhan linier kronis pada masa balita tidak hanya menghambat perkembangan fisik, tetapi juga menyebabkan penurunan kapasitas kognitif permanen, kerentanan terhadap penyakit metabolik saat dewasa, serta penurunan produktivitas ekonomi jangka panjang. Menurut Febriyanti, Kusrini, dan Hartanto (2025) dalam penelitian Analisis Perbandingan Algoritma SVM, Random Forest dan Logistic Regression untuk Prediksi Stunting Balita, parameter antropometri seperti usia, berat badan, dan tinggi badan merupakan indikator fisis fundamental yang sangat efektif dimodelkan untuk mendeteksi deviasi pertumbuhan serta mengklasifikasikan risiko stunting pada balita.
 
-**Contoh referensi (berformat APA/IEEE):**
-> Goodfellow, I., Bengio, Y., & Courville, A. (2016). *Deep Learning*. MIT Press.
+Salah satu pendekatan yang dapat digunakan adalah Machine Learning, yaitu dengan memanfaatkan data rekam medis historis untuk memetakan hubungan kompleks antara parameter antropometri dan kategori status gizi. Penelitian Bimawan, Astuti, dan Arsi (2024) melalui Comparison of Random Forest, K-Nearest Neighbor, Decision Tree, and XGBoost Algorithms for Detecting Stunting in Toddlers menunjukkan bahwa algoritma pembelajaran mesin mampu mengenali pola pertumbuhan balita secara akurat pada dataset besar.
 
-**[Jelaskan konteks dan latar belakang proyek]**
+Dengan hal itu, proyek ini memiliki tujuan untuk mengembangkan dan membandingkan tiga model, yaitu Multinomial Logistic Regression, LightGBM Classifier, dan Multilayer Perceptron (MLP), untuk mengklasifikasikan status gizi balita ke dalam empat kategori (Normal, Stunted, Severely Stunted, dan Tinggi). Dataset utama terdiri atas 121.000 observasi balita di Indonesia, dengan variabel umur (bulan), jenis kelamin, tinggi badan (cm), dan label status gizi. Hasil penelitian diharapkan dapat menjadi instrumen pendukung keputusan (decision support system) bagi kader posyandu dan tenaga kesehatan dalam mitigasi stunting yang cepat, objektif, dan presisi, serta mendukung pencapaian SDG 3 (Kehidupan Sehat dan Sejahtera), khususnya Target 3.2 dalam mengakhiri masalah malnutrisi pada balita.
 
 ### 2.2 Keterkaitan dengan SDGs (WAJIB)
 
@@ -76,19 +69,17 @@ Ide proyek **berasal dari mahasiswa** dan harus selaras dengan **salah satu** da
 
 | Komponen | Pertanyaan Panduan | Jawaban Anda |
 |----------|--------------------|--------------|
-| **SDG yang dipilih** | Goal nomor berapa dan apa namanya? | [ ... ] |
-| **Target SDG** | Target (misal 3.4, 13.1) mana yang paling relevan? | [ ... ] |
-| **Masalah nyata** | Masalah konkret apa yang diangkat? Siapa yang terdampak? | [ ... ] |
-| **Peran ML** | Mengapa ML/DL cocok? Apa keputusan atau proses yang dibantu? | [ ... ] |
-| **Indikator kontribusi** | Bagaimana hasil model berkontribusi pada target SDG (langsung/tidak langsung)? | [ ... ] |
-| **Pertimbangan etika** | Risiko bias, privasi, atau dampak salah prediksi? | [ ... ] |
+| **SDG yang dipilih** | Goal nomor berapa dan apa namanya? | SDG 3 - Kehidupan Sehat dan Sejahtera |
+| **Target SDG** | Target (misal 3.4, 13.1) mana yang paling relevan? | Target 3.2 - Mengakhiri kematian bayi dan balita yang dapat dicegah, serta mengeliminasi segala bentuk malnutrisi pada balita pada tahun 2030. |
+| **Masalah nyata** | Masalah konkret apa yang diangkat? Siapa yang terdampak? | Gangguan pertumbuhan kronis (stunting) masih menjadi permasalahan kesehatan anak yang serius di Indonesia. Kader posyandu dan tenaga kesehatan di fasilitas primer membutuhkan sarana yang dapat membantu klasifikasi status gizi balita secara cepat dan konsisten berdasarkan data antropometri, guna menghindari kesalahan pencatatan manual serta mencegah keterlambatan intervensi gizi pada balita.  |
+| **Peran ML** | Mengapa ML/DL cocok? Apa keputusan atau proses yang dibantu? | Model Machine Learning dan Deep Learning mampu mengenali pola pertumbuhan tersebut dari data historis skala besar secara instan, objektif, dan konsisten. Model berperan sebagai clinical decision support system dalam mengklasifikasikan status gizi ke dalam 4 kategori (Normal, Stunted, Severely Stunted, dan Tinggi) untuk mempercepat rujukan medis dan penanganan gizi |
+| **Indikator kontribusi** | Bagaimana hasil model berkontribusi pada target SDG (langsung/tidak langsung)? | Kontribusi proyek dilihat dari kemampuan model dalam mengklasifikasikan status gizi balita dengan tingkat akurasi yang terukur melalui Macro F1-Score dan Recall, khususnya dalam mengenali kategori stunting dan severely stunted. Hasilnya diharapkan dapat menjadi informasi pendukung bagi kader kesehatan dalam mitgasi dini serta penentuan prioritas intervensi gizi anak. |
+| **Pertimbangan etika** | Risiko bias, privasi, atau dampak salah prediksi? | Kesalahan prediksi, khususnya false negative (balita stunting terprediksi normal), dapat menyebabkan keterlambatan penanganan medis yang berdampak pada tumbuh kembang anak. Oleh karena itu, hasil prediksi model perlu disertai evaluasi berbasis recall, dan tidak digunakan sebagai satu-satunya penentu diagnosis medis tanpa konfirmasi tenaga kesehatan. |
 
-**Sumber ide:** [Jelaskan dari mana ide muncul: pengalaman pribadi, lingkungan sekitar, isu lokal/nasional, dll.]
+**Sumber ide:** Ide ini berasal dari permasalahan klasifikasi gizi balita di posyandu yang masih sering dilakukan secara manual menggunakan tabel kurva standar pertumbuhan fisik. dari permasalahan tersebut penerapan model klasifikasi machine learning dapat digunakan untuk membantu proses deteksi risiko stunting secara lebih cepat dan konsisten.
 
 ### 2.3 Ringkasan Alur Lifecycle Proyek
-Jelaskan dalam 1 paragraf pendek bagaimana proyek Anda melewati tahap L → M → O → P (dan iterasi apa yang direncanakan).
-
-**[Tulis ringkasan alur lifecycle proyek Anda]**
+Proyek ini dijalankan mengikuti kerangka kerja Machine Learning Lifecycle (L-M-O-P) secara terstruktur dan bertahap. Pada tahap Learning Problem (L), masalah dirumuskan sebagai tugas klasifikasi multi-kelas untuk memprediksi status gizi balita menggunakan dataset dengan metrik keberhasilan utama berupa Macro F1-Score dan Recall pada kategori stunting. Pada tahap Model Design (M), dirancang tiga model komparatif yang meliputi Multinomial Logistic Regression sebagai model dasar linear, LightGBM Classifier sebagai model advanced berbasis gradient boosting, dan Multilayer Perceptron (MLP) sebagai model deep learning berlapis. Pada tahap Optimization (O), dilakukan penanganan ketidakseimbangan kelas menggunakan class weights, penyetelan hyperparameter (seperti learning rate dan kedalaman pohon), serta penerapan teknik regularisasi (dropout dan batch normalization) untuk menjaga kestabilan konvergensi. Pada tahap Predict & Evaluate (P), performa ketiga model diuji pada data uji independen (unseen test set) menggunakan matriks konfusi dan metrik evaluasi terkait. Apabila evaluasi pada tahap P menemukan tingginya angka false negative pada kelas balita berisiko, iterasi perbaikan akan dilakukan kembali ke tahap L/O melalui penyesuaian strategi pembobotan sampel atau penataan ulang fungsi objektif sebelum model akhir ditetapkan.
 
 ---
 
