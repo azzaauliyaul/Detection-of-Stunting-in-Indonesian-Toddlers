@@ -7,9 +7,9 @@ Repositori ini memuat eksperimen model klasifikasi status gizi dan deteksi dini 
 ## DAFTAR PUSTAKA DAN BERKAS DOKUMEN
 
 Struktur direktori dokumentasi pada folder `docs/` dirinci sebagai berikut:
-- `docs/09_LAMPIRAN_B.md` Formulir pengajuan ide checkpoint 1 yang memuat rumusan target klasifikasi multikelas status gizi, tautan dataset Kaggle (121k rows), rencana tiga model komparatif, analisis keterkaitan dengan SDG 3 (Target 3.2), mitigasi risiko etika (*false negative*), dan referensi ilmiah.
-- `docs/09_minggu9.md` Panduan capaian tugas dan kriteria checkpoint tahap awal untuk perumusan masalah pembelajaran (*Learning Problem*).
-- `docs/Laporan_Proyek_ML_LMOP.md` Draf utama template laporan komprehensif dari Bab 1 hingga Bab 10 yang mencakup seluruh alur siklus hidup proyek L-M-O-P.
+- [`docs/09_LAMPIRAN_B.md`](docs/09_LAMPIRAN_B.md) Formulir pengajuan ide checkpoint 1 yang memuat rumusan target klasifikasi multikelas status gizi, tautan dataset Kaggle (121k rows), rencana tiga model komparatif, analisis keterkaitan dengan SDG 3 (Target 3.2), mitigasi risiko etika (*false negative*), dan referensi ilmiah.
+- [`docs/09_minggu9.md`](docs/09_minggu9.md) Panduan capaian tugas dan kriteria checkpoint tahap awal untuk perumusan masalah pembelajaran (*Learning Problem*).
+- [`docs/Laporan_Proyek_ML_LMOP.md`](docs/Laporan_Proyek_ML_LMOP.md) Draf utama template laporan komprehensif dari Bab 1 hingga Bab 10 yang mencakup seluruh alur siklus hidup proyek L-M-O-P.
 
 ---
 
