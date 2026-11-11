@@ -4,6 +4,27 @@ Repositori ini memuat eksperimen model klasifikasi status gizi dan deteksi dini 
 
 ---
 
+## SUMBER DATASET
+
+Dataset yang digunakan dalam penelitian ini adalah dataset sekunder publik dari Kaggle:
+- **Nama Dataset:** *Stunting Balita Detection (121k rows)*
+- **Kreator:** Rendi Putra
+- **Jumlah Data:** 121.000 observasi
+- **Tautan Dataset:** [Kaggle - Stunting Balita Detection](https://www.kaggle.com/datasets/rendiputra/stunting-balita-detection-121k-rows)
+
+---
+
+## ANGGOTA TIM / KELOMPOK
+
+**Nama Kelompok:** 9
+
+| No. | Nama Anggota | NIM |
+| :---: | :--- | :--- |
+| 1. | Azza Auliyaul Fitri | 244311006 |
+| 2. | Edein Nur Cahyo | 244311012 | 
+
+---
+
 ## DAFTAR PUSTAKA DAN BERKAS DOKUMEN
 
 Struktur direktori dokumentasi pada folder `docs/` dirinci sebagai berikut:
