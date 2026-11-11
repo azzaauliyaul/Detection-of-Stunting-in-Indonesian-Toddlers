@@ -4,6 +4,34 @@ Repositori ini memuat eksperimen model klasifikasi status gizi dan deteksi dini 
 
 ---
 
+## ANGGOTA TIM / KELOMPOK
+
+**Nama Kelompok:** 9
+
+| No. | Nama Anggota | NIM |
+| :---: | :--- | :--- |
+| 1. | Azza Auliyaul Fitri | 244311006 |
+| 2. | Edwin Nur Cahyo | 244311012 | 
+
+---
+## RINGKASAN PROYEK
+
+Proyek riset ini bertujuan menyediakan instrumen pendukung keputusan (*clinical decision support system*) bagi kader posyandu dan tenaga kesehatan untuk mengklasifikasikan status gizi balita secara cepat, objektif, dan presisi guna memitigasi risiko *stunting* sejak dini. Pendekatan komputasi membandingkan tiga tingkatan model secara bertahap:
+- **Baseline Model:** *Multinomial Logistic Regression* untuk mengevaluasi korelasi linear dasar antara variabel antropometri (umur, jenis kelamin, dan tinggi badan) dengan kategori status gizi.
+- **Advanced Model:** *LightGBM Classifier* berbasis *gradient boosting* untuk memetakan hubungan non-linear antarvariabel secara cepat dan efisien pada data terstruktur skala besar.
+- **Deep Learning Model:** *Multilayer Perceptron* (MLP) dengan arsitektur jaringan saraf tiruan teratur menggunakan fungsi aktivasi, *Batch Normalization*, serta *Dropout* guna mereduksi risiko *overfitting* serta mempelajari representasi fitur kompleks pada data tabular.
+
+---
+
+## TUJUAN PROYEK
+
+1. **Mengembangkan Sistem Deteksi Otomatis:** Membangun model pemodelan pembelajaran mesin yang mampu mengklasifikasikan status gizi balita ke dalam 4 kategori (*Normal*, *Stunted*, *Severely Stunted*, dan *Tinggi*) secara cepat, objektif, dan presisi berbasis data antropometri.
+2. **Evaluasi Komparatif Algoritma:** Membandingkan performa tiga pendekatan algoritma yang berbeda (*Multinomial Logistic Regression* sebagai *baseline*, *LightGBM Classifier* sebagai *advanced tree-based model*, dan *Multilayer Perceptron* sebagai *deep learning model*) pada dataset tabular skala besar (121.000 baris).
+3. **Optimasi Metrik Evaluasi Spesifik Kesehatan:** Menangani masalah ketidakseimbangan kelas (*class imbalance*) dan mengoptimalkan metrik *Macro F1-Score* serta *Recall* pada kategori *stunted* guna meminimalkan risiko *false negative* (kesalahan prediksi balita stunting yang terdeteksi normal).
+4. **Instrumen Pendukung Keputusan (*Decision Support System*):** Menyediakan rekomendasi berbasis data yang dapat dimanfaatkan oleh kader posyandu dan tenaga kesehatan sebagai sarana pendukung rujukan medis dan penanganan gizi secara dini.
+
+---
+
 ## SUMBER DATASET
 
 Dataset yang digunakan dalam penelitian ini adalah dataset sekunder publik dari Kaggle:
@@ -14,16 +42,6 @@ Dataset yang digunakan dalam penelitian ini adalah dataset sekunder publik dari 
 
 ---
 
-## ANGGOTA TIM / KELOMPOK
-
-**Nama Kelompok:** 9
-
-| No. | Nama Anggota | NIM |
-| :---: | :--- | :--- |
-| 1. | Azza Auliyaul Fitri | 244311006 |
-| 2. | Edein Nur Cahyo | 244311012 | 
-
----
 
 ## DAFTAR PUSTAKA DAN BERKAS DOKUMEN
 
@@ -33,10 +51,3 @@ Struktur direktori dokumentasi pada folder `docs/` dirinci sebagai berikut:
 - [`docs/Laporan_Proyek_ML_LMOP.md`](docs/Laporan_Proyek_ML_LMOP.md) Draf utama template laporan komprehensif dari Bab 1 hingga Bab 10 yang mencakup seluruh alur siklus hidup proyek L-M-O-P.
 
 ---
-
-## RINGKASAN PROYEK
-
-Proyek riset ini bertujuan menyediakan instrumen pendukung keputusan (*clinical decision support system*) bagi kader posyandu dan tenaga kesehatan untuk mengklasifikasikan status gizi balita secara cepat, objektif, dan presisi guna memitigasi risiko *stunting* sejak dini. Pendekatan komputasi membandingkan tiga tingkatan model secara bertahap:
-- **Baseline Model:** *Multinomial Logistic Regression* untuk mengevaluasi korelasi linear dasar antara variabel antropometri (umur, jenis kelamin, dan tinggi badan) dengan kategori status gizi.
-- **Advanced Model:** *LightGBM Classifier* berbasis *gradient boosting* untuk memetakan hubungan non-linear antarvariabel secara cepat dan efisien pada data terstruktur skala besar.
-- **Deep Learning Model:** *Multilayer Perceptron* (MLP) dengan arsitektur jaringan saraf tiruan teratur menggunakan fungsi aktivasi, *Batch Normalization*, serta *Dropout* guna mereduksi risiko *overfitting* serta mempelajari representasi fitur kompleks pada data tabular.
