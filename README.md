@@ -1,4 +1,4 @@
-# KLASIFIKASI STATUS GIZI DAN DETEKSI DINI STUNTING PADA BALITA DI INDONESIA
+# KLASIFIKASI STATUS GIZI UNTUK DETEKSI STUNTING PADA BALITA DI INDONESIA
 
 Repositori ini memuat eksperimen model klasifikasi status gizi dan deteksi dini risiko *stunting* pada balita berbasis parameter antropometri. Seluruh pengembangan disusun mengacu pada kerangka kerja siklus hidup *Machine Learning* L-M-O-P (*Learning Problem*, *Model Design*, *Optimization*, *Predict & Evaluate*).
 
@@ -16,19 +16,19 @@ Repositori ini memuat eksperimen model klasifikasi status gizi dan deteksi dini 
 ---
 ## RINGKASAN PROYEK
 
-Proyek riset ini bertujuan menyediakan instrumen pendukung keputusan (*clinical decision support system*) bagi kader posyandu dan tenaga kesehatan untuk mengklasifikasikan status gizi balita secara cepat, objektif, dan presisi guna memitigasi risiko *stunting* sejak dini. Pendekatan komputasi membandingkan tiga tingkatan model secara bertahap:
-- **Baseline Model:** *Multinomial Logistic Regression* untuk mengevaluasi korelasi linear dasar antara variabel antropometri (umur, jenis kelamin, dan tinggi badan) dengan kategori status gizi.
-- **Advanced Model:** *LightGBM Classifier* berbasis *gradient boosting* untuk memetakan hubungan non-linear antarvariabel secara cepat dan efisien pada data terstruktur skala besar.
-- **Deep Learning Model:** *Multilayer Perceptron* (MLP) dengan arsitektur jaringan saraf tiruan teratur menggunakan fungsi aktivasi, *Batch Normalization*, serta *Dropout* guna mereduksi risiko *overfitting* serta mempelajari representasi fitur kompleks pada data tabular.
+Proyek riset ini bertujuan menyediakan instrumen pendukung keputusan (*clinical decision support system*) bagi kader posyandu dan tenaga kesehatan untuk mengklasifikasikan status gizi balita secara cepat, objektif, dan presisi guna memitigasi tingkat *stunting*. Pendekatan komputasi membandingkan tiga tingkatan model secara bertahap:
+- **Baseline Model:** *Multinomial Logistic Regression* untuk mengevaluasi korelasi linear dasar antara variabel antropometri (umur, TB, BB) dengan status gizi.
+- **Advanced Tree-Based Model:** *LightGBM Classifier* / *XGBoost Classifier* / *Random Forest Classifier* untuk memetakan hubungan non-linear dan ketidakseimbangan kelas pada data tabular.
+- **Deep Learning Model:** *Multilayer Perceptron* (MLP) untuk mempelajari representasi fitur kompleks menggunakan arsitektur jaringan saraf tiruan teratur.
 
 ---
 
 ## TUJUAN PROYEK
 
 1. **Mengembangkan Sistem Deteksi Otomatis:** Membangun model pemodelan pembelajaran mesin yang mampu mengklasifikasikan status gizi balita ke dalam 4 kategori (*Normal*, *Stunted*, *Severely Stunted*, dan *Tinggi*) secara cepat, objektif, dan presisi berbasis data antropometri.
-2. **Evaluasi Komparatif Algoritma:** Membandingkan performa tiga pendekatan algoritma yang berbeda (*Multinomial Logistic Regression* sebagai *baseline*, *LightGBM Classifier* sebagai *advanced tree-based model*, dan *Multilayer Perceptron* sebagai *deep learning model*) pada dataset tabular skala besar (121.000 baris).
+2. **Evaluasi Komparatif Algoritma:** Membandingkan performa tiga pendekatan algoritma yang berbeda pada dataset tabular skala besar (121.000 baris).
 3. **Optimasi Metrik Evaluasi Spesifik Kesehatan:** Menangani masalah ketidakseimbangan kelas (*class imbalance*) dan mengoptimalkan metrik *Macro F1-Score* serta *Recall* pada kategori *stunted* guna meminimalkan risiko *false negative* (kesalahan prediksi balita stunting yang terdeteksi normal).
-4. **Instrumen Pendukung Keputusan (*Decision Support System*):** Menyediakan rekomendasi berbasis data yang dapat dimanfaatkan oleh kader posyandu dan tenaga kesehatan sebagai sarana pendukung rujukan medis dan penanganan gizi secara dini.
+4. **Instrumen Pendukung Keputusan (*Decision Support System*):** Menyediakan rekomendasi berbasis data yang dapat dimanfaatkan oleh kader posyandu dan tenaga kesehatan sebagai sarana pendukung rujukan medis.
 
 ---
 
