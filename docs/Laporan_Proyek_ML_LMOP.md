@@ -1,7 +1,7 @@
 ## INFORMASI PROYEK
 
 **Judul Proyek:**  
-Klasifikasi Status Gizi dan Deteksi Dini Stunting pada Balita di Indonesia
+Klasifikasi Status Gizi Untuk Deteksi Stunting pada Balita di Indonesia
 
 - **Nama Mahasiswa:** Azza Auliyaul Fitri & Edwin Nur Cahyo
 - **NIM:** 244311006 & 244311012
@@ -73,7 +73,7 @@ Ide proyek **berasal dari mahasiswa** dan harus selaras dengan **salah satu** da
 | **Target SDG** | Target (misal 3.4, 13.1) mana yang paling relevan? | Target 3.2 - Mengakhiri kematian bayi dan balita yang dapat dicegah, serta mengeliminasi segala bentuk malnutrisi pada balita pada tahun 2030. |
 | **Masalah nyata** | Masalah konkret apa yang diangkat? Siapa yang terdampak? | Gangguan pertumbuhan kronis (stunting) masih menjadi permasalahan kesehatan anak yang serius di Indonesia. Kader posyandu dan tenaga kesehatan di fasilitas primer membutuhkan sarana yang dapat membantu klasifikasi status gizi balita secara cepat dan konsisten berdasarkan data antropometri, guna menghindari kesalahan pencatatan manual serta mencegah keterlambatan intervensi gizi pada balita.  |
 | **Peran ML** | Mengapa ML/DL cocok? Apa keputusan atau proses yang dibantu? | Model Machine Learning dan Deep Learning mampu mengenali pola pertumbuhan tersebut dari data historis skala besar secara instan, objektif, dan konsisten. Model berperan sebagai clinical decision support system dalam mengklasifikasikan status gizi ke dalam 4 kategori (Normal, Stunted, Severely Stunted, dan Tinggi) untuk mempercepat rujukan medis dan penanganan gizi |
-| **Indikator kontribusi** | Bagaimana hasil model berkontribusi pada target SDG (langsung/tidak langsung)? | Kontribusi proyek dilihat dari kemampuan model dalam mengklasifikasikan status gizi balita dengan tingkat akurasi yang terukur melalui Macro F1-Score dan Recall, khususnya dalam mengenali kategori stunting dan severely stunted. Hasilnya diharapkan dapat menjadi informasi pendukung bagi kader kesehatan dalam mitgasi dini serta penentuan prioritas intervensi gizi anak. |
+| **Indikator kontribusi** | Bagaimana hasil model berkontribusi pada target SDG (langsung/tidak langsung)? | Kontribusi proyek dilihat dari kemampuan model dalam mengklasifikasikan status gizi balita dengan tingkat akurasi yang terukur melalui Macro F1-Score dan Recall, khususnya dalam mengenali kategori stunting dan severely stunted. Hasilnya diharapkan dapat menjadi informasi pendukung bagi kader kesehatan dalam penentuan prioritas intervensi gizi anak. |
 | **Pertimbangan etika** | Risiko bias, privasi, atau dampak salah prediksi? | Kesalahan prediksi, khususnya false negative (balita stunting terprediksi normal), dapat menyebabkan keterlambatan penanganan medis yang berdampak pada tumbuh kembang anak. Oleh karena itu, hasil prediksi model perlu disertai evaluasi berbasis recall, dan tidak digunakan sebagai satu-satunya penentu diagnosis medis tanpa konfirmasi tenaga kesehatan. |
 
 **Sumber ide:** Ide ini berasal dari permasalahan klasifikasi gizi balita di posyandu yang masih sering dilakukan secara manual menggunakan tabel kurva standar pertumbuhan fisik. dari permasalahan tersebut penerapan model klasifikasi machine learning dapat digunakan untuk membantu proses deteksi risiko stunting secara lebih cepat dan konsisten.
@@ -112,84 +112,46 @@ Rumuskan masalah dalam kerangka *Learning Problem*:
 
 ### 3.3 Goals
 
-Tujuan harus spesifik, terukur, dan selaras dengan problem statement.
-**Contoh tujuan:**
-1. Membangun model ML untuk memprediksi variabel target dengan akurasi > 80%
-2. Mengukur performa tiga pendekatan model (baseline, advanced, deep learning)
-3. Menentukan model terbaik berdasarkan metrik evaluasi yang relevan
-4. Menghasilkan sistem yang dapat bekerja secara reproducible
+1. **Membangun Model Klasifikasi Multi-Kelas yang Akurat dan Sensitif:** Mengembangkan model *Machine Learning* untuk mengklasifikasikan status gizi balita (*Normal*, *Stunted*, *Severely Stunted*, dan *Tinggi*) berdasarkan indikator antropometri (umur, tinggi badan, dan berat badan) dengan target performa **Macro F1-Score lebih dari 85%** serta **Recall lebih dari 90%** pada kelas berisiko (*Stunted* dan *Severely Stunted*) guna meminimalkan kesalahan deteksi (*false negative*).
+2. **Evaluasi Komparatif Lima Pendekatan Model:** Mengukur dan membandingkan performa lima algoritma yang terbagi ke dalam tiga tingkatan kompleksitas: *Baseline Model* (**Multinomial Logistic Regression**), *Advanced Tree-Based Models* (**Random Forest Classifier**, **XGBoost Classifier**, dan **LightGBM Classifier**), serta *Deep Learning Model* (**Multilayer Perceptron / MLP**).
+3. **Menentukan Model Optimal Berdasarkan Metrik Medis dan Efisiensi:** Memilih arsitektur model terbaik melalui evaluasi komprehensif (*Confusion Matrix*, *Macro F1-Score*, *Recall*, *Precision*, serta waktu pelatihan) dengan menerapkan penanganan ketidakseimbangan kelas (*class imbalance*).
+4. **Menghasilkan Pipeline yang Reproducible dan Terstandar:** Membangun alur pemrosesan data (*preprocessing*, *stratified splitting*, *scaling*, dan *training*) yang terdokumentasi secara sistematis berdasarkan siklus hidup L-M-O-P sehingga dapat direplikasi dan diintegrasikan di masa depan.
+5. **Kontribusi terhadap Pencapaian SDG 3 (Target 3.2):** Menghasilkan purwarupa instrumen pendukung keputusan (*clinical decision support system*) yang dapat dimanfaatkan oleh kader posyandu dan tenaga kesehatan untuk mendeteksi risiko *stunting* secara cepat, objektif, dan presisi, guna mendukung upaya mengakhiri segala bentuk malnutrisi pada balita pada tahun 2030.
 
-> Sertakan minimal satu goal yang menunjukkan kontribusi terhadap target SDG yang dipilih (Bab 2.2).
+---
 
-**[Tulis goals Anda di sini]**
+### 3.4 Solution Approach **[M]**
 
-### 3.4 Solution Approach  **[M]**
-
-Mahasiswa **WAJIB** menggunakan minimal **tiga model** dengan komposisi sebagai berikut:
 #### **Model 1 – Baseline Model**
-Model sederhana sebagai pembanding dasar.
-**Pilihan model:**
-- Linear Regression (untuk regresi)
-- Logistic Regression (untuk klasifikasi)
-- K-Nearest Neighbors (KNN)
-- Decision Tree
-- Naive Bayes
+**Model yang dipilih:** **Multinomial Logistic Regression**
 
-**[Jelaskan model baseline yang Anda pilih dan alasannya]**
+**Alasan Pemilihan:**
+- **Tolok Ukur Linear Dasar (*Linear Baseline*):** *Multinomial Logistic Regression* merupakan model klasifikasi statistik fundamental yang memperluas regresi logistik biner ke dalam masalah klasifikasi multi-kelas (4 kategori status gizi) menggunakan fungsi *Softmax*.
+- **Interpretabilitas dan Efisiensi:** Model ini sangat cepat dilatih pada 121.000 baris data dan memberikan gambaran awal mengenai sejauh mana batas keputusan (*decision boundary*) yang bersifat linear mampu memisahkan kategori status gizi berdasarkan variabel umur, tinggi badan, dan berat badan.
+- **Pembanding Awal:** Hasil evaluasi dari model ini menjadi acuan dasar (*benchmark*) untuk membuktikan apakah hubungan non-linear pada data antropometri memerlukan model yang lebih kompleks.
+
+---
 
 #### **Model 2 – Advanced / ML Model**
-Model machine learning yang lebih kompleks.
-**Pilihan model:**
-- Random Forest
-- Gradient Boosting (XGBoost, LightGBM, CatBoost)
-- Support Vector Machine (SVM)
-- Ensemble methods
-- Clustering (K-Means, DBSCAN) - untuk unsupervised
-- PCA / dimensionality reduction (untuk preprocessing)
+**Model yang dipilih:** Pendekatan *Tree-Based Ensemble Learning* yang membandingkan tiga algoritma sekaligus, yaitu **Random Forest Classifier**, **XGBoost Classifier**, dan **LightGBM Classifier**.
 
-**[Jelaskan model advanced yang Anda pilih dan alasannya]**
+**Alasan Pemilihan:**
+- **Kemampuan Memetakan Hubungan Non-Linear:** Pertumbuhan balita mengikuti kurva standar WHO (Z-score) yang bersifat sangat non-linear (misalnya, tinggi badan tertentu bisa tergolong *Normal* pada usia 12 bulan, namun tergolong *Stunted* pada usia 24 bulan). Algoritma berbasis pohon keputusan (*decision tree*) sangat unggul dalam memetakan aturan batas (*threshold*) bersyarat seperti ini.
+- **Perbandingan Dua Paradigma Ensemble (*Bagging* vs. *Boosting*):**
+  1. **Random Forest Classifier (*Bagging*):** Membangun banyak pohon keputusan secara paralel dan independen untuk menghasilkan prediksi yang stabil, tahan terhadap *noise*, serta meminimalkan *overfitting*.
+  2. **XGBoost Classifier (*Extreme Gradient Boosting*):** Membangun pohon secara sekuensial (*depth-wise*) di mana setiap pohon baru mengoreksi kesalahan prediksi pohon sebelumnya, serta memiliki dukungan *regularization* dan pembobotan kelas yang sangat presisi.
+  3. **LightGBM Classifier (*Leaf-wise Gradient Boosting*):** Mengoptimalkan kecepatan pelatihan dan efisiensi memori pada dataset skala besar (121.000 observasi) dengan pertumbuhan pohon berbasis daun (*leaf-wise*) yang mampu menangkap pola detail pada kasus-kasus perbatasan (*borderline cases*) antar kategori status gizi.
+
+---
 
 #### **Model 3 – Deep Learning Model (WAJIB)**
-Model deep learning yang sesuai dengan jenis data.
-**Pilihan Implementasi (pilih salah satu sesuai dataset):**
-**A. Tabular Data:**
-- Multilayer Perceptron (MLP) / Neural Network
-- Minimum: 2 hidden layers
-- Contoh: prediksi harga, klasifikasi binary/multiclass
+**Model yang dipilih:** **A. Tabular Data – Multilayer Perceptron (MLP)**
 
-**B. Image Data:**
-- CNN sederhana (minimum 2 convolutional layers) **ATAU**
-- Transfer Learning (ResNet, VGG, MobileNet, EfficientNet) - **recommended**
-- Contoh: klasifikasi gambar, object detection
-
-**C. Text Data:**
-- LSTM/GRU (minimum 1 layer) **ATAU**
-- Embedding + Dense layers **ATAU**
-- Pre-trained model (BERT, DistilBERT, Word2Vec)
-- Contoh: sentiment analysis, text classification
-
-**D. Time Series:**
-- LSTM/GRU untuk sequential prediction
-- Contoh: forecasting, anomaly detection
-
-**E. Recommender Systems:**
-- Neural Collaborative Filtering (NCF)
-- Autoencoder-based Collaborative Filtering
-- Deep Matrix Factorization
-
-**Minimum Requirements untuk Deep Learning:**
-- ✅ Model harus training minimal 10 epochs
-- ✅ Harus ada plot loss dan accuracy/metric per epoch
-- ✅ Harus ada hasil prediksi pada test set
-- ✅ Training time dicatat (untuk dokumentasi)
-
-**Tidak Diperbolehkan:**
-- ❌ Copy-paste kode tanpa pemahaman
-- ❌ Model tidak di-train (hanya define arsitektur)
-- ❌ Tidak ada evaluasi pada test set
-
-**[Jelaskan model deep learning yang Anda pilih dan alasannya]**
-
+**Alasan Pemilihan:**
+- **Kesesuaian dengan Karakteristik Data Tabular:** Dataset yang digunakan terdiri atas fitur numerik terstruktur (*umur*, *tinggi badan*, *berat badan*) sehingga arsitektur *Multilayer Perceptron* (MLP) berbasis *Dense / Fully Connected Layers* merupakan pilihan arsitektur jaringan saraf tiruan yang paling tepat dan efisien tanpa risiko *overparameterization*.
+- **Arsitektur Teratur dan Pencegahan Overfitting:** Model dirancang menggunakan minimal 2 hingga 3 *hidden layers* dengan fungsi aktivasi non-linear (**ReLU**), dilengkapi **Batch Normalization** untuk menstabilkan distribusi gradien antar lapisan, serta lapisan **Dropout** (rate 0.2–0.3) untuk mencegah *overfitting* selama proses pelatihan.
+- **Klasifikasi Multi-Kelas dengan Softmax:** Lapisan keluaran (*output layer*) menggunakan 4 neuron dengan fungsi aktivasi **Softmax** dan *loss function* berbasis *Cross-Entropy* yang disesuaikan dengan *class weights* untuk menangani ketidakseimbangan distribusi kelas pada data balita.
+- **Kepatuhan terhadap Standar Evaluasi:** Proses pelatihan akan dijalankan minimal 10–50 *epochs* dengan pencatatan waktu pelatihan (*training time*), visualisasi kurva *loss* dan metrik evaluasi per *epoch*, serta pengujian akhir pada *test set*.
 ---
 
 ## 4. DATA UNDERSTANDING  **[L]**
