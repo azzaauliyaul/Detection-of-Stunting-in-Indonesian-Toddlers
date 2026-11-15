@@ -157,40 +157,36 @@ Rumuskan masalah dalam kerangka *Learning Problem*:
 ## 4. DATA UNDERSTANDING  **[L]**
 ### 4.1 Informasi Dataset
 **Sumber Dataset:**  
-[Sebutkan sumber: Kaggle, UCI ML Repository, atau sumber lain dengan URL]
+Sebutkan sumber: [Kaggle - Stunting Balita Detection](https://www.kaggle.com/datasets/rendiputra/stunting-balita-detection-121k-rows)
 
 **Deskripsi Dataset:**
-- Jumlah baris (rows): [angka]
-- Jumlah kolom (columns/features): [angka]
-- Tipe data: [Tabular / Image / Text / Time Series / Audio / Video]
-- Ukuran dataset: [MB/GB]
-- Format file: [CSV / JSON / Images / TXT / etc.]
+- Jumlah baris (rows): 121.000
+- Jumlah kolom (columns/features): 4
+- Tipe data: Tabular
+- Ukuran dataset: MB
+- Format file: CSV 
 
 ### 4.2 Deskripsi Fitur
 Jelaskan setiap fitur/kolom yang ada dalam dataset.
 **Contoh tabel:**
 | Nama Fitur | Tipe Data | Deskripsi | Contoh Nilai |
 |------------|-----------|-----------|--------------|
-| id | Integer | ID unik data | 1, 2, 3 |
-| age | Integer | Usia (tahun) | 25, 30, 45 |
-| income | Float | Pendapatan (juta) | 5.5, 10.2 |
-| category | Categorical | Kategori produk | A, B, C |
-| text | String | Teks ulasan | "Produk bagus..." |
-| image | Image | Citra 224x224 RGB | Array 224x224x3 |
-| label | Categorical | Label target | 0, 1 atau "positif", "negatif" |
+| Umur (bulan) | Integer | Usia (bulan) | `0`, `12`, `24`, `48` |
+| Jenis Kelamin | Categorical | Jenis kelamin biologis balita (WHO) | `'laki-laki'`, `'perempuan'` |
+| Tinggi Badan (cm) | Float | Ukuran panjang atau tinggi badan balita (cm) | `49.5`, `76.2`, `98.4` |
+| Status Gizi | Categorical | status gizi balita | `'normal'`, `'stunted'`, `'severely stunted'`, `'tinggi'` |
 
-**[Buat tabel deskripsi fitur Anda di sini]**
 
 ### 4.3 Kondisi Data
 
 Jelaskan kondisi dan permasalahan data:
 
-- **Missing Values:** [Ada/Tidak, berapa persen?]
+- **Missing Values:** Tidak
 - **Duplicate Data:** [Ada/Tidak, berapa banyak?]
-- **Outliers:** [Ada/Tidak, pada fitur apa?]
-- **Imbalanced Data:** [Ada/Tidak, rasio kelas?]
-- **Noise:** [Jelaskan jika ada]
-- **Data Quality Issues:** [Jelaskan jika ada masalah lain]
+- **Outliers:** Ada, pada fitur Tinggi Badan (cm)
+- **Imbalanced Data:** Ada, pada label status gizi rasio kelas sekitar **5 : 1** antara kelas `normal` dan `stunted`
+- **Noise:** Minim / Bersih
+- **Data Quality Issues:** Tidak ditemukan Data Quality Issues
 - **Asumsi Data (i.i.d., distribusi train-test, potensi data leakage):** [Jelaskan]
 
 ### 4.4 Exploratory Data Analysis (EDA) - (**OPSIONAL**)
