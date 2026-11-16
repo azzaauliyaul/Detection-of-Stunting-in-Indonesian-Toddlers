@@ -112,7 +112,7 @@ Rumuskan masalah dalam kerangka *Learning Problem*:
 
 ### 3.3 Goals
 
-1. **Membangun Model Klasifikasi Multi-Kelas yang Akurat dan Sensitif:** Mengembangkan model *Machine Learning* untuk mengklasifikasikan status gizi balita (*Normal*, *Stunted*, *Severely Stunted*, dan *Tinggi*) berdasarkan indikator antropometri (umur, tinggi badan, dan berat badan) dengan target performa **Macro F1-Score lebih dari 85%** serta **Recall lebih dari 90%** pada kelas berisiko (*Stunted* dan *Severely Stunted*) guna meminimalkan kesalahan deteksi (*false negative*).
+1. **Membangun Model Klasifikasi Multi-Kelas yang Akurat dan Sensitif:** Mengembangkan model *Machine Learning* untuk mengklasifikasikan status gizi balita (*Normal*, *Stunted*, *Severely Stunted*, dan *Tinggi*) berdasarkan indikator antropometri (umur, tinggi badan, dan berat badan) dan meminimalkan kesalahan deteksi (*false negative*).
 2. **Evaluasi Komparatif Lima Pendekatan Model:** Mengukur dan membandingkan performa lima algoritma yang terbagi ke dalam tiga tingkatan kompleksitas: *Baseline Model* (**Multinomial Logistic Regression**), *Advanced Tree-Based Models* (**Random Forest Classifier**, **XGBoost Classifier**, dan **LightGBM Classifier**), serta *Deep Learning Model* (**Multilayer Perceptron / MLP**).
 3. **Menentukan Model Optimal Berdasarkan Metrik Medis dan Efisiensi:** Memilih arsitektur model terbaik melalui evaluasi komprehensif (*Confusion Matrix*, *Macro F1-Score*, *Recall*, *Precision*, serta waktu pelatihan) dengan menerapkan penanganan ketidakseimbangan kelas (*class imbalance*).
 4. **Menghasilkan Pipeline yang Reproducible dan Terstandar:** Membangun alur pemrosesan data (*preprocessing*, *stratified splitting*, *scaling*, dan *training*) yang terdokumentasi secara sistematis berdasarkan siklus hidup L-M-O-P sehingga dapat direplikasi dan diintegrasikan di masa depan.
@@ -160,7 +160,7 @@ Rumuskan masalah dalam kerangka *Learning Problem*:
 Sebutkan sumber: [Kaggle - Stunting Balita Detection](https://www.kaggle.com/datasets/rendiputra/stunting-balita-detection-121k-rows)
 
 **Deskripsi Dataset:**
-- Jumlah baris (rows): 121.000
+- Jumlah baris (rows): 120.999
 - Jumlah kolom (columns/features): 4
 - Tipe data: Tabular
 - Ukuran dataset: MB
@@ -182,12 +182,15 @@ Jelaskan setiap fitur/kolom yang ada dalam dataset.
 Jelaskan kondisi dan permasalahan data:
 
 - **Missing Values:** Tidak
-- **Duplicate Data:** [Ada/Tidak, berapa banyak?]
+- **Duplicate Data:** Ada, 81,574 Baris (67.42%)
 - **Outliers:** Ada, pada fitur Tinggi Badan (cm)
 - **Imbalanced Data:** Ada, pada label status gizi rasio kelas sekitar **5 : 1** antara kelas `normal` dan `stunted`
 - **Noise:** Minim / Bersih
 - **Data Quality Issues:** Tidak ditemukan Data Quality Issues
-- **Asumsi Data (i.i.d., distribusi train-test, potensi data leakage):** [Jelaskan]
+- **Asumsi Data (i.i.d., distribusi train-test, potensi data leakage):**
+  - **Asumsi i.i.d.:** Setiap baris mewakili satu balita (0–60 bulan) secara independen dengan distribusi pertumbuhan yang seragam.
+  - **Distribusi Train-Test:** Menggunakan Stratified Split (80:20) untuk menjaga proporsi kelas target tetap identik antara data latih dan uji.
+  - **Potensi Data Leakage:** Sangat rendah karena seluruh fitur merupakan pengukuran fisik murni sebelum pelabelan, serta preprocessing (fit) hanya dilakukan pada data latih.
 
 ### 4.4 Exploratory Data Analysis (EDA) - (**OPSIONAL**)
 
@@ -205,22 +208,22 @@ Jelaskan kondisi dan permasalahan data:
 - Class distribution plot
 
 
-#### Visualisasi 1: [Judul Visualisasi]
-[Insert gambar/plot]
+#### Visualisasi 1: Distribusi Kategori Status Gizi Balita
+<img src="/img/bar-plot.png" width="300" alt="bar plot">
 
 **Insight:**  
 [Jelaskan apa yang dapat dipelajari dari visualisasi ini]
 
-#### Visualisasi 2: [Judul Visualisasi]
+#### Visualisasi 2: Sebaran Tinggi Badan (cm) pada Setiap Status Gizi 
 
-[Insert gambar/plot]
+<img src="/img/box-plot.png" width="300" alt="box plot">
 
 **Insight:**  
 [Jelaskan apa yang dapat dipelajari dari visualisasi ini]
 
-#### Visualisasi 3: [Judul Visualisasi]
+#### Visualisasi 3: Umur vs Tinggi Badan (Sampel 3.000 Data)
 
-[Insert gambar/plot]
+<img src="/img/Scatter-plot.png" width="300" alt="scatter plot">
 
 **Insight:**  
 [Jelaskan apa yang dapat dipelajari dari visualisasi ini]
