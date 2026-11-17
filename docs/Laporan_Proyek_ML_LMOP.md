@@ -212,21 +212,21 @@ Jelaskan kondisi dan permasalahan data:
 <img src="/img/bar-plot.png" width="300" alt="bar plot">
 
 **Insight:**  
-[Jelaskan apa yang dapat dipelajari dari visualisasi ini]
+Terdapat ketimpangan kelas (class imbalance) yang cukup tinggi. Kelas **`normal`** mendominasi lebih dari separuh dataset yaitu sebanyak **67.755 data (56,00%)**, sedangkan kelas **`stunted`** hanya berjumlah **13.815 data (11,42%)**, diikuti **`severely stunted`** (**19.869 data / 16,42%**) dan **`tinggi`** (**19.560 data / 16,17%**). Rasio ketimpangan hampir 5 : 1 antara kelas `normal` dan `stunted` ini menandakan bahwa model berisiko bias ke kelas mayoritas apabila tidak ditangani dengan stratified splitting dan pembobotan kelas (class weights).
 
 #### Visualisasi 2: Sebaran Tinggi Badan (cm) pada Setiap Status Gizi 
 
 <img src="/img/box-plot.png" width="300" alt="box plot">
 
 **Insight:**  
-[Jelaskan apa yang dapat dipelajari dari visualisasi ini]
+Meskipun nilai median tinggi badan terlihat meningkat secara bertahap dari `severely stunted` hingga `tinggi`, rentang kotak (IQR) keempat kategori saling tumpang tindih (*overlapping*) disertai beberapa titik pencilan di batas bawah. Hal ini membuktikan bahwa fitur `Tinggi Badan (cm)` **tidak dapat berdiri sendiri** untuk membedakan status gizi balita tanpa dikombinasikan dengan variabel `Umur (bulan)`.
 
 #### Visualisasi 3: Umur vs Tinggi Badan (Sampel 3.000 Data)
 
 <img src="/img/Scatter-plot.png" width="300" alt="scatter plot">
 
 **Insight:**  
-[Jelaskan apa yang dapat dipelajari dari visualisasi ini]
+Titik-titik warna membentuk jalur pertumbuhan yang melengkung ke atas dan tersusun rapi menjadi empat lapisan dari bawah ke atas (severely stunted -> stunted -> normal -> tinggi). Terlihat bahwa batas pemisah antar-kelas berbentuk melengkung (*non-linear*) dan pita kategori `stunted` memiliki lebar margin yang sangat sempit di antara `severely stunted` dan `normal`.
 
 ---
 
@@ -247,7 +247,9 @@ Missing Values:
 - Alasan: Median lebih robust terhadap outliers dibanding mean
 ```
 
-**[Jelaskan langkah-langkah data cleaning yang Anda lakukan]**
+Proses data cleaning yang dilakukan berdasarkan hasil temuan pada tahap Data Understanding adalah:
+1. Removing duplicates: Sebanyak 81.574 baris duplikat (67,42%) dihapus sehingga tersisa 39.425 baris data. Alasannya adalah karena jika baris yang sama persis dibiarkan, data tersebut akan masuk ke dalam training set sekaligus validation/test set (data leakage).
+2. Penyamaan format teks: Seluruh nilai teks pada kolom `Jenis Kelamin` dan `Status Gizi` diseragamkan menjadi huruf kecil dan dibersihkan dari spasi berlebih menggunakan `.str.strip().str.lower()`. Alasannya adalah untuk mencegah munculnya kategori ganda akibat perbedaan penulisan huruf kapital atau spasi tersembunyi sebelum data diubah menjadi angka.
 
 ### 5.2 Feature Engineering
 **Aktivitas:**
@@ -256,7 +258,8 @@ Missing Values:
 - Feature selection
 - Dimensionality reduction
 
-**[Jelaskan feature engineering yang Anda lakukan]**
+Proses rekayasa fitur yang dilakukan pada dataset adalah:
+1. Pemilihan Fitur (Feature Selection): Ketiga fitur input yaitu `Umur (bulan)`, `Jenis Kelamin`, dan `Tinggi Badan (cm)` seluruhnya dipertahankan sebagai variabel prediktor. Alasannya adalah karena ketiganya merupakan indikator utama dalam standar antropometri WHO untuk menentukan status gizi berdasarkan indeks Tinggi Badan menurut Umur (TB/U).
 
 ### 5.3 Data Transformation
 
@@ -284,7 +287,10 @@ Missing Values:
 - Rolling statistics
 - Differencing
 
-**[Jelaskan transformasi yang Anda lakukan]**
+Proses transformasi data dilakukan setelah pembagian data (splitting) dengan melakukan `.fit()` hanya pada training set lalu menerapkan `.transform()` pada validation dan test set:
+1. Encoding Fitur (`gender_encoder`): Kolom `Jenis Kelamin` diubah menjadi angka biner (`'laki-laki'` menjadi `0` dan `'perempuan'` menjadi `1`) menggunakan `LabelEncoder()`. Alasannya adalah agar fitur teks dapat diproses secara matematis oleh seluruh algoritma, sekaligus menghindari kebocoran informasi dengan hanya melakukan fit pada data latih.
+2. Encoding Variabel Target (`target_encoder`): Kolom `Status Gizi` diubah menjadi label numerik (`'normal'` = `0`, `'severely stunted'` = `1`, `'stunted'` = `2`, dan `'tinggi'` = `3`) menggunakan instance `LabelEncoder()` yang terpisah dari encoder fitur. Alasannya adalah agar pemetaan fitur jenis kelamin tidak tertimpa oleh kamus label target.
+3. Standardisasi Fitur Numerik (`StandardScaler`): Kolom `Umur (bulan)` dan `Tinggi Badan (cm)` diskalakan menggunakan `StandardScaler()` sehingga memiliki rata-rata 0 dan standar deviasi 1, sementara kolom biner `Jenis Kelamin` tidak ikut diskalakan. Alasannya adalah karena rentang nilai tinggi badan (40,01–128 cm) dan umur (0–60 bulan) jauh lebih besar daripada jenis kelamin (0–1), sehingga penyetaraan skala wajib dilakukan agar proses optimasi gradien pada Multinomial Logistic Regression dan MLP berjalan stabil dan cepat konvergen.
 
 ### 5.4 Data Splitting
 
@@ -304,7 +310,12 @@ Menggunakan stratified split untuk mempertahankan distribusi kelas:
 
 > **Penting:** Test set hanya digunakan **sekali** pada tahap P (evaluasi akhir). Tuning pada tahap O hanya boleh memakai validation set / cross-validation. Fit scaler/encoder hanya pada data training untuk menghindari data leakage.
 
-**[Jelaskan strategi splitting Anda dan alasannya]**
+Dataset bersih sebanyak 39.425 observasi unik dibagi menjadi tiga bagian menggunakan teknik Stratified Splitting dua tahap dengan `random_state=42`:
+1. Training Set (70% — 27.597 sampel): Digunakan untuk melatih seluruh model.
+2. Validation Set (15% — 5.914 sampel): Digunakan untuk mengevaluasi performa selama pengembangan model dan proses hyperparameter tuning / early stopping.
+3. Test Set (15% — 5.914 sampel): sebagai unseen data dan baru digunakan satu kali pada tahap evaluasi akhir di Bab 7.
+
+Alasannya menggunakan parameter `stratify=y` adalah untuk menjamin proporsi keempat kelas status gizi terutama kelas minoritas `stunted` terbagi secara merata dan konsisten di seluruh bagian data.
 
 ### 5.5 Data Balancing (jika diperlukan)
 **Teknik yang digunakan:**
@@ -313,7 +324,8 @@ Menggunakan stratified split untuk mempertahankan distribusi kelas:
 - Class weights
 - Ensemble sampling
 
-**[Jelaskan jika Anda melakukan data balancing]**
+Untuk mengatasi ketidakseimbangan jumlah data antara kelas mayoritas `normal` (54,57%) dan kelas minoritas `stunted` (11,20%), metode yang digunakan adalah:
+1. Pembobotan Kelas (Class Weights): Menghitung bobot penalti yang berbanding terbalik dengan frekuensi kelas dari `y_train` menggunakan `compute_class_weight(class_weight="balanced")`, yang menghasilkan bobot `0.4581` untuk `normal`, `1.5117` untuk `severely stunted`, `2.2313` untuk `stunted`, dan `1.4132` untuk `tinggi`.
 
 ### 5.6 Ringkasan Data Preparation
 
@@ -324,6 +336,14 @@ Menggunakan stratified split untuk mempertahankan distribusi kelas:
 **[Jelaskan Mengapa ?]**
 3. **Bagaimana** implementasinya
 **[Jelaskan Bagaimana]**
+
+| Langkah | Apa yang Dilakukan | Mengapa Penting | Bagaimana Implementasinya |
+| :--- | :--- | :--- | :--- |
+| 1. Data Cleaning | Menyeragamkan teks dan menghapus 81.574 baris duplikat hingga tersisa 39.425 data unik | Mencegah data leakage akibat baris identik masuk ke data latih sekaligus data uji | `.str.strip().str.lower()` dan `drop_duplicates().reset_index(drop=True)` sebelum splitting |
+| 2. Data Splitting | Membagi 39.425 data menjadi 70% Train (27.597), 15% Val (5.914), dan 15% Test (5.914) | Menjaga rasio kelas minoritas `stunted` tetap konsisten dan mengisolasi test set untuk evaluasi akhir | Dua kali `train_test_split(..., stratify=y, random_state=42)` |
+| 3. Encoding | Mengubah `Jenis Kelamin` dan `Status Gizi` menjadi angka dengan dua encoder terpisah | Memenuhi syarat input numerik model tanpa menimpa kamus pemetaan fitur dan target | `gender_encoder` dan `target_encoder` (`LabelEncoder`) yang di-`fit` hanya pada data train |
+| 4. Feature Scaling | Menstandarkan nilai `Umur (bulan)` dan `Tinggi Badan (cm)` ke rata-rata 0 dan standar deviasi 1 | Mempercepat konvergensi gradien pada Logistic Regression dan MLP tanpa kebocoran statistik val/test | `StandardScaler()` di-`.fit_transform()` pada `X_train` lalu `.transform()` pada `X_val` dan `X_test` |
+| 5. Data Balancing | Memberikan bobot penalti lebih tinggi pada kelas minoritas berdasarkan distribusi `y_train` | Meningkatkan sensitivitas (*Recall*) deteksi `stunted` tanpa menambah data sintetis yang bias | `compute_class_weight(class_weight="balanced", classes=classes, y=y_train)` |
 
 ---
 
