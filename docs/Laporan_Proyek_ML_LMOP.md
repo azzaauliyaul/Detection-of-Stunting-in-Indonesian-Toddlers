@@ -424,40 +424,52 @@ F1 per kelas: normal 0,9926 | severely stunted 0,9846 | stunted 0,9600 | tinggi 
 
 #### 6.2.1 Deskripsi Model  **[M]**
 
-**Nama Model:** [Nama model, misal: Random Forest / XGBoost]  
+**Nama Model:** XGBoost (*Extreme Gradient Boosting*) Classifier  
 **Teori Singkat:**  
-[Jelaskan bagaimana algoritma ini bekerja]
+XGBoost merupakan algoritma *ensemble learning* berbasis *Gradient Boosted Decision Trees* (GBDT) yang membangun sekumpulan pohon keputusan secara sekuensial (*boosting*). Berbeda dengan *bagging* yang melatih pohon secara independen, setiap pohon baru pada XGBoost dilatih untuk memprediksi dan mengoreksi kesalahan (*residual/gradient*) dari gabungan pohon-pohon sebelumnya. Algoritma ini meminimalkan fungsi objektif yang terdiri atas *training loss* (pada kasus multikelas ini menggunakan *multi-class log loss*) dan suku regularisasi ( *L_1* dan *L_2*) menggunakan pendekatan ekspansi Taylor orde kedua untuk menentukan struktur pemisahan (*split*) pohon secara optimal.
 
 **Alasan Pemilihan:**  
-[Mengapa memilih model ini?]
+Dataset deteksi stunting merupakan data tabular dengan fitur antropometri (`Umur (bulan)`, `Jenis Kelamin`, dan `Tinggi Badan (cm)`) yang memiliki pola batas keputusan non-linear mengikuti standar kurva pertumbuhan WHO. XGBoost dipilih karena mampu menangkap interaksi kompleks antarfitur tersebut secara otomatis, mendukung pembobotan sampel (`sample_weight`) untuk menangani ketidakseimbangan distribusi kelas target (`normal`, `severely stunted`, `stunted`, dan `tinggi`), serta memiliki mekanisme regularisasi bawaan yang kuat untuk menekan *overfitting*.
 
 **Keunggulan:**
-- [Sebutkan keunggulan]
+- Memiliki performa akurasi dan *F1-Score* yang sangat tinggi pada data tabular terstruktur dengan batas keputusan non-linear.
+- Dilengkapi regularisasi *L_1* (`reg_alpha`), *L_2* (`reg_lambda`), serta *pruning* berbasis parameter `gamma` untuk mengontrol kompleksitas pohon dan mencegah *overfitting*.
+- Mendukung pemrosesan paralel (`n_jobs=-1`) sehingga waktu pelatihan jauh lebih cepat dibandingkan metode *boosting* konvensional maupun *Random Forest*.
+- Mendukung pembobotan sampel (`sample_weight`) secara langsung untuk meningkatkan sensitivitas (*recall*) terhadap kelas minoritas seperti `stunted`.
 
 **Kelemahan:**
-- [Sebutkan kelemahan]
+- Memiliki banyak *hyperparameter* (`learning_rate`, `max_depth`, `subsample`, `colsample_bytree`, dll.) sehingga membutuhkan proses *tuning* yang cermat agar mencapai keseimbangan *bias-variance* yang optimal.
+- Lebih sensitif terhadap *noise* atau *outlier* dibandingkan *Random Forest* karena sifat *boosting* yang terus berfokus memperbaiki sampel yang salah diprediksi.
+- Interpretabilitas model menurun seiring bertambahnya jumlah pohon (*n_estimators*) dibandingkan pohon keputusan tunggal.
 
 #### 6.2.2 Hypothesis Space & Inductive Bias  **[M]**
 
-- **Model family / arsitektur:** [misal: ensemble pohon keputusan]
-- **Hypothesis space:** [fungsi non-linear piecewise, interaksi fitur otomatis, dll.]
-- **Inductive bias / asumsi:** [misal: data tabular dengan struktur ambang/threshold]
-- **Perbandingan dengan baseline:** [apa yang bisa dipelajari model ini yang tidak bisa baseline?]
+- **Model family / arsitektur:** *Gradient Boosted Decision Trees* (Ensemble pohon keputusan aditif berbasis *boosting*).
+- **Hypothesis space:** Himpunan fungsi penjumlahan terbobot (*additive model*) dari $K$ pohon regresi/klasifikasi ($F(x) = \sum_{k=1}^{K} f_k(x)$), di mana setiap pohon $f_k$ mempartisi ruang fitur menjadi wilayah hiper-persegi panjang (*axis-aligned rectangular regions*) sehingga membentuk fungsi keputusan *piecewise constant* yang non-linear dan mampu memodelkan interaksi antarfitur secara otomatis.
+- **Inductive bias / asumsi:**
+  1. *Axis-aligned threshold splits:* Mengasumsikan batas keputusan antar kelas status gizi dapat didekati secara akurat melalui serangkaian aturan ambang batas (*threshold*) ortogonal pada masing-masing fitur (misalnya kombinasi rentang umur tertentu dan batas tinggi badan).
+  2. *Smoothness & Simplicity via Regularization:* Mengasumsikan pohon yang lebih dangkal dengan bobot daun yang kecil akan memiliki kemampuan generalisasi lebih baik pada data baru.
+  3. *Sequential Residual Correction:* Mengasumsikan kesalahan klasifikasi pada iterasi awal dapat diperbaiki secara bertahap melalui pembaruan gradien pada iterasi berikutnya.
+- **Perbandingan dengan baseline:** Jika dibandingkan dengan model *baseline* linear (seperti *Logistic Regression*) yang hanya membentuk satu batas pemisah linear (*hyperplane*), XGBoost mampu memetakan hubungan non-linear bertingkat antara umur dan tinggi badan yang berbeda untuk setiap jenis kelamin. Sementara dibandingkan *Random Forest* yang melatih pohon secara paralel dengan kedalaman penuh (cenderung menghafal data latih hingga *Train Accuracy* mencapai 100%), XGBoost mempelajari koreksi kesalahan secara bertahap dengan regularisasi bobot daun sehingga menghasilkan selisih *overfitting* (*train-validation gap*) yang lebih terkendali.
 
 #### 6.2.3 Implementasi (Ringkas)  **[M]**
 ```python
-# Contoh kode
-from sklearn.ensemble import RandomForestClassifier
+import numpy as np
+from xgboost import XGBClassifier
 
-model_advanced = RandomForestClassifier(
+sample_weights = np.array([class_weights[label] for label in y_train])
+
+model_advanced = XGBClassifier(
     n_estimators=100,
-    max_depth=10,
-    random_state=42
+    max_depth=6,
+    learning_rate=0.1,
+    eval_metric="mlogloss",
+    random_state=42,
+    n_jobs=-1
 )
-model_advanced.fit(X_train, y_train)
-y_pred_advanced = model_advanced.predict(X_test)
+model_advanced.fit(X_train, y_train, sample_weight=sample_weights)
+y_pred_advanced = model_advanced.predict(X_val)
 ```
-
 #### 6.2.4 Optimization: Hyperparameter Tuning  **[O]**
 
 **Parameter yang digunakan:**
