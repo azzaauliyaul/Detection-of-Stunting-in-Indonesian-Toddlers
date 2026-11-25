@@ -123,12 +123,13 @@ Rumuskan masalah dalam kerangka *Learning Problem*:
 ### 3.4 Solution Approach **[M]**
 
 #### **Model 1 – Baseline Model**
-**Model yang dipilih:** **Multinomial Logistic Regression**
+**Model yang dipilih:** **Decission tree**
 
 **Alasan Pemilihan:**
-- **Tolok Ukur Linear Dasar (*Linear Baseline*):** *Multinomial Logistic Regression* merupakan model klasifikasi statistik fundamental yang memperluas regresi logistik biner ke dalam masalah klasifikasi multi-kelas (4 kategori status gizi) menggunakan fungsi *Softmax*.
-- **Interpretabilitas dan Efisiensi:** Model ini sangat cepat dilatih pada 121.000 baris data dan memberikan gambaran awal mengenai sejauh mana batas keputusan (*decision boundary*) yang bersifat linear mampu memisahkan kategori status gizi berdasarkan variabel umur, tinggi badan, dan berat badan.
-- **Pembanding Awal:** Hasil evaluasi dari model ini menjadi acuan dasar (*benchmark*) untuk membuktikan apakah hubungan non-linear pada data antropometri memerlukan model yang lebih kompleks.
+- **Baseline Berbasis Aturan:** *Decision Tree* membagi data secara bertahap dengan ambang (*threshold*) pada satu fitur dalam satu waktu, dan langsung menangani klasifikasi 4 kategori status gizi tanpa asumsi linearitas.
+- **Sesuai Karakteristik Data:** Data hanya memiliki tiga fitur (umur, jenis kelamin, tinggi badan), dan status gizi bergantung pada tinggi badan *relatif terhadap umur dan jenis kelamin*. Pola ambang bertingkat ini sesuai dengan cara kerja pohon keputusan, termasuk interaksi antar fitur yang tidak dapat ditangkap batas keputusan linear.
+- **Interpretabilitas dan Efisiensi:** Aturan pemisahan dapat dibaca langsung, dan pelatihannya sangat cepat (sekitar 0,02 detik pada 27.597 data latih).
+- **Pembanding Awal:** Hasilnya menjadi acuan (*benchmark*) untuk menilai apakah model yang lebih kompleks, seperti *Random Forest*, memberi peningkatan yang berarti dalam mengurangi *overfitting* pohon tunggal.
 
 ---
 
@@ -209,21 +210,21 @@ Jelaskan kondisi dan permasalahan data:
 
 
 #### Visualisasi 1: Distribusi Kategori Status Gizi Balita
-<img src="/img/bar-plot.png" width="300" alt="bar plot">
+<img src="/img/bar-plot.png" width="500" alt="bar plot">
 
 **Insight:**  
 Terdapat ketimpangan kelas (class imbalance) yang cukup tinggi. Kelas **`normal`** mendominasi lebih dari separuh dataset yaitu sebanyak **67.755 data (56,00%)**, sedangkan kelas **`stunted`** hanya berjumlah **13.815 data (11,42%)**, diikuti **`severely stunted`** (**19.869 data / 16,42%**) dan **`tinggi`** (**19.560 data / 16,17%**). Rasio ketimpangan hampir 5 : 1 antara kelas `normal` dan `stunted` ini menandakan bahwa model berisiko bias ke kelas mayoritas apabila tidak ditangani dengan stratified splitting dan pembobotan kelas (class weights).
 
 #### Visualisasi 2: Sebaran Tinggi Badan (cm) pada Setiap Status Gizi 
 
-<img src="/img/box-plot.png" width="300" alt="box plot">
+<img src="/img/box-plot.png" width="500" alt="box plot">
 
 **Insight:**  
 Meskipun nilai median tinggi badan terlihat meningkat secara bertahap dari `severely stunted` hingga `tinggi`, rentang kotak (IQR) keempat kategori saling tumpang tindih (*overlapping*) disertai beberapa titik pencilan di batas bawah. Hal ini membuktikan bahwa fitur `Tinggi Badan (cm)` **tidak dapat berdiri sendiri** untuk membedakan status gizi balita tanpa dikombinasikan dengan variabel `Umur (bulan)`.
 
 #### Visualisasi 3: Umur vs Tinggi Badan (Sampel 3.000 Data)
 
-<img src="/img/Scatter-plot.png" width="300" alt="scatter plot">
+<img src="/img/Scatter-plot.png" width="500" alt="scatter plot">
 
 **Insight:**  
 Titik-titik warna membentuk jalur pertumbuhan yang melengkung ke atas dan tersusun rapi menjadi empat lapisan dari bawah ke atas (severely stunted -> stunted -> normal -> tinggi). Terlihat bahwa batas pemisah antar-kelas berbentuk melengkung (*non-linear*) dan pita kategori `stunted` memiliki lebar margin yang sangat sempit di antara `severely stunted` dan `normal`.
@@ -355,43 +356,67 @@ Untuk mengatasi ketidakseimbangan jumlah data antara kelas mayoritas `normal` (5
 
 #### 6.1.1 Deskripsi Model  **[M]**
 
-**Nama Model:** [Nama model, misal: Logistic Regression]  
-**Teori Singkat:**  
-[Jelaskan secara singkat bagaimana model ini bekerja]  
-**Alasan Pemilihan:**  
-[Mengapa memilih model ini sebagai baseline?]
+**Nama Model:** Decision Tree Classifier (CART)
+
+**Teori Singkat:**
+Decision Tree membagi data secara bertahap dengan pertanyaan ya/tidak pada satu fitur (misalnya "tinggi badan ≤ X?"). Pada setiap langkah dipilih pertanyaan yang paling baik memisahkan kelas (diukur dengan *Gini impurity*), dan proses diulang sampai tiap cabang berisi satu kelas. Prediksi dibuat dengan menelusuri pohon dari akar ke daun, dan model langsung menangani 4 kategori status gizi.
+
+**Alasan Pemilihan:**
+- Data hanya memiliki tiga fitur (umur, jenis kelamin, tinggi badan), dan status gizi bergantung pada tinggi badan *relatif terhadap umur dan jenis kelamin*. Pola ambang bertingkat ini sesuai dengan cara kerja pohon keputusan, termasuk interaksi antar fitur.
+- Model sederhana, sangat cepat dilatih (sekitar 0,08 detik pada 27.597 data latih), dan aturannya dapat dibaca.
+- Hasilnya menjadi acuan (*benchmark*) untuk menilai apakah model yang lebih kompleks, seperti Random Forest, memberi peningkatan yang berarti, khususnya dalam mengurangi *overfitting* pohon tunggal.
 
 #### 6.1.2 Hypothesis Space & Inductive Bias  **[M]**
 
-- **Model family / arsitektur:** [misal: model linear]
-- **Hypothesis space:** [himpunan fungsi yang dapat direpresentasikan, misal: batas keputusan linear]
-- **Inductive bias / asumsi:** [misal: hubungan fitur-target linear, fitur independen]
-- **Implikasi terhadap dataset Anda:** [apakah asumsi cocok dengan data?]
+- **Model family / arsitektur:** Model non-parametrik berbasis pohon (*tree-based*), dengan struktur yang tumbuh sesuai data.
+- **Hypothesis space:** Himpunan fungsi *piecewise-constant*, yaitu ruang fitur dibagi menjadi kotak-kotak sejajar sumbu (*axis-aligned*) dan tiap kotak diberi satu kelas. Kapasitasnya naik seiring `max_depth`. Dengan `max_depth=None`, pohon dapat menghafal data latih.
+- **Inductive bias / asumsi:** (1) batas keputusan dapat didekati dengan pemisahan sejajar sumbu pada satu fitur dalam satu waktu; (2) titik yang berdekatan cenderung berkelas sama (kekonstanan lokal); (3) pemisahan dipilih secara *greedy* per simpul, tanpa asumsi linearitas dan tanpa asumsi distribusi fitur.
+- **Implikasi terhadap dataset Anda:** Asumsi ini cukup cocok. Hasil eksperimen menunjukkan batas antar kelas non-linear dan bergantung pada ambang tinggi badan pada umur tertentu, yang dapat didekati dengan pemisahan bertingkat. Konsekuensinya, batas yang melengkung di ruang umur-tinggi hanya didekati dengan "tangga", sehingga pohon membutuhkan banyak percabangan (kedalaman 21, 1.069 daun) dan cenderung *overfitting* ringan.
 
 #### 6.1.3 Implementasi (Ringkas)  **[M]**
 ```python
-# Contoh kode (opsional, bisa dipindah ke GitHub)
-from sklearn.linear_model import LogisticRegression
+from sklearn.tree import DecisionTreeClassifier
 
-model_baseline = LogisticRegression(C=1.0, max_iter=100)
+model_baseline = DecisionTreeClassifier(
+    criterion='gini',
+    max_depth=None,
+    class_weight=class_weights,
+    random_state=RANDOM_STATE
+)
 model_baseline.fit(X_train, y_train)
-y_pred_baseline = model_baseline.predict(X_test)
+y_pred_baseline = model_baseline.predict(X_val)   # validation set; test set dievaluasi di Bab 7
 ```
 
 #### 6.1.4 Optimization: Objective, Hyperparameter & Regularisasi  **[O]**
 
-**Objective/loss yang dioptimalkan:** [misal: log-loss + L2]  
+**Objective/loss yang dioptimalkan:** Di setiap simpul, pohon memilih pemisahan (fitur dan ambang) yang paling menurunkan *Gini impurity* (ketidakmurnian kelas) secara *greedy*, dengan `class_weight` agar kelas minoritas tidak diabaikan.
+
 **Parameter yang digunakan:**
 ```
-[Tuliskan parameter penting, contoh:]
-- C (regularization): 1.0
-- solver: 'lbfgs'
-- max_iter: 100
+- criterion: 'gini'
+- max_depth: None (pohon tumbuh penuh)
+- min_samples_split: 2 (default)
+- min_samples_leaf: 1 (default)
+- class_weight: balanced (dictionary dari tahap data preparation)
+- random_state: 42
 ```
+**Regularisasi:** Tidak ada (baseline tanpa tuning). Kedalaman akhir pohon 21 dengan 1.069 daun. Analisis `max_depth` menunjukkan F1 macro validation berhenti naik pada kedalaman 20 (0,9813), sama dengan `None`, sehingga pembatasan kedalaman tidak memperbaiki hasil. Regularisasi lain yang dapat dicoba pada tahap berikutnya: `min_samples_leaf` dan `ccp_alpha`.
 
 #### 6.1.5 Hasil Awal  **[O → P]**
 
-**[Tuliskan hasil awal pada validation set; evaluasi akhir pada test set dijelaskan di Bab 7]**
+Hasil pada **validation set** (5.914 sampel):
+
+| Metrik | Nilai |
+|---|---|
+| Accuracy | 0,9868 |
+| Precision (macro) | 0,9820 |
+| Recall (macro) | 0,9806 |
+| F1 (macro) | 0,9813 |
+| F1 (weighted) | 0,9868 |
+
+F1 per kelas: normal 0,9926 | severely stunted 0,9846 | stunted 0,9600 | tinggi 0,9880.
+
+**Diagnosis kecocokan model:** F1 macro train = 1,0000 dan validation = 0,9813 (gap sekitar 0,019). Artinya model *overfitting ringan* (menghafal data latih), tetapi tidak *underfitting* karena skor validation tetap tinggi. Kelas `stunted` menjadi yang terlemah (F1 0,9600). Fitur paling berpengaruh adalah tinggi badan (0,5177), lalu umur (0,4232), dan jenis kelamin (0,0591).
 
 ---
 
