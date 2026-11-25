@@ -17,7 +17,7 @@ Repositori ini memuat eksperimen model klasifikasi status gizi dan deteksi dini 
 ## RINGKASAN PROYEK
 
 Proyek riset ini bertujuan menyediakan instrumen pendukung keputusan (*clinical decision support system*) bagi kader posyandu dan tenaga kesehatan untuk mengklasifikasikan status gizi balita secara cepat, objektif, dan presisi guna memitigasi tingkat *stunting*. Pendekatan komputasi membandingkan tiga tingkatan model secara bertahap:
-- **Baseline Model:** *Multinomial Logistic Regression* untuk mengevaluasi korelasi linear dasar antara variabel antropometri (umur, TB, BB) dengan status gizi.
+- **Baseline Model:** *Decision Tree* sebagai acuan awal yang sederhana dan interpretabel untuk memprediksi status gizi dari umur, jenis kelamin, dan tinggi badan.
 - **Advanced Tree-Based Model:** *LightGBM Classifier* / *XGBoost Classifier* / *Random Forest Classifier* untuk memetakan hubungan non-linear dan ketidakseimbangan kelas pada data tabular.
 - **Deep Learning Model:** *Multilayer Perceptron* (MLP) untuk mempelajari representasi fitur kompleks menggunakan arsitektur jaringan saraf tiruan teratur.
 
